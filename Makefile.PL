@@ -4,9 +4,10 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    'NAME'         => 'Template::Provider::HTTP',
-    'VERSION_FROM' => 'lib/Template/Provider/HTTP.pm',
-    'PREREQ_PM'    => {
+    NAME         => 'Template::Provider::HTTP',
+    VERSION_FROM => 'lib/Template/Provider/HTTP.pm',
+    LICENSE      => 'perl',
+    PREREQ_PM    => {
         'Cwd'                        => 0,
         'Data::Dumper'               => 0,
         'File::Slurp'                => 0,

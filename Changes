@@ -1,0 +1,6 @@
+0.02 - 7 Apr 2009
+    * fixes to test suite - no functional changes
+    * added license to makefile
+
+0.01 - 6 Oct 2008
+    * first release to CPAN

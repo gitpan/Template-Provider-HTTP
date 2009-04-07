@@ -3,11 +3,11 @@
 use warnings;
 use strict;
 
-use Test::More tests => 17;
+use Test::More tests => 16;
 use Cwd;
 
 use_ok("Template::Provider::HTTP") || die;
-use_ok "Template";
+use Template;
 
 # create a test server and start it.
 require 't/lib/TestServer.pm';
@@ -39,7 +39,6 @@ my %tests = (
     'in_files'  => "in_files\n",
     'in_http_a' => "in_http_a\n",
     'in_http_b' => "in_http_b\n",
-
 );
 
 foreach my $template ( sort keys %tests ) {
@@ -49,6 +48,9 @@ foreach my $template ( sort keys %tests ) {
     my $out = '';
     ok $tt->process( $template, {}, \$out ), "process $template";
     is $out, $tests{$template}, "output is correct";
-    is $tt->error, undef, "no error generated";
+
+    $tt->error
+        ? fail( "got an unexpected error: " . $tt->error )
+        : pass("no error generated");
 }
 
