@@ -1,3 +1,8 @@
+0.03 - 21 Nov 2012
+    * moved repo to GitHub (https://github.com/evdb/template-provider-http)
+    * added running of tests on Travis-CI
+    * no code changes
+
 0.02 - 7 Apr 2009
     * fixes to test suite - no functional changes
     * added license to makefile

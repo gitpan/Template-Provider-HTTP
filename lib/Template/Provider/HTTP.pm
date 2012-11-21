@@ -6,11 +6,19 @@ use warnings;
 
 use LWP::UserAgent;
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 =head1 NAME
 
 Template::Provider::HTTP - fetch templates from a webserver
+
+=begin html
+
+<a href="https://travis-ci.org/evdb/template-provider-http">
+  <img src="https://secure.travis-ci.org/evdb/template-provider-http.png?branch=master" alt="Build status" />
+</a>
+
+=end html
 
 =head1 SYNOPSIS
 
@@ -166,6 +174,14 @@ sub _template_content {
 =head1 SEE ALSO
 
 L<Template::Provider> - which this module inherits from.
+
+=head1 BUGS AND REPO
+
+This code is hosted on GitHub:
+
+code: https://github.com/evdb/template-provider-http
+
+bugs: https://github.com/evdb/template-provider-http/issues
 
 =head1 AUTHOR
 
