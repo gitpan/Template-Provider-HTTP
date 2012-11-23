@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Template-Provider-HTTP
-version:            0.03
+version:            0.04
 abstract:           ~
 author:  []
 license:            perl

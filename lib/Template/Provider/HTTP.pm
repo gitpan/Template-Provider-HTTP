@@ -6,7 +6,7 @@ use warnings;
 
 use LWP::UserAgent;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 =head1 NAME
 
@@ -51,6 +51,17 @@ you serve your templates over HTTP from a webserver.
 For our purposes we wanted to access the latest templates from a Subversion
 repository and have them update immediately.
 
+ABSOLUTE = 1 when passed to the constructor acts as a helper to support full 
+path to your http template.  "Full" path begins at the domain 
+name(omit http://):
+
+    use Template;
+    use Template::Provider::HTTP;
+    
+    my $tt = Template->new( { LOAD_TEMPLATES => [
+        Template::Provider::HTTP->new( ABSOLUTE => 1 ) ], } );
+    $tt->process( 'www.example.com/templates/my_template.html', \%vars );
+
 =head1 NOTE
 
 Currently there is NO caching, so the webserver will get multiple hits every
@@ -76,8 +87,9 @@ sub _init {
 
     my @path
         = grep {m{ \A http s? :// \w }xi} @{ $self->{INCLUDE_PATH} || [] };
+    push( @path, "http:" ) if $self->{ABSOLUTE}; 
     $self->{INCLUDE_PATH} = \@path;
-
+    
     $self->{UA} = $params->{UA};
 
     return $self;
@@ -191,6 +203,8 @@ Edmund von der Burg C<<evdb@ecclestoad.co.uk>>
 
 Developed whilst working at Foxtons for an internal system there and released
 with their blessing.
+
+Kevin Kane (https://github.com/klkane) added support for C<ABSOLUTE => 1>.
 
 =head1 GOD SPEED
 
