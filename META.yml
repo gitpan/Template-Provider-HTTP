@@ -1,28 +1,19 @@
 --- #YAML:1.0
-name:               Template-Provider-HTTP
-version:            0.04
-abstract:           ~
-author:  []
-license:            perl
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
-build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Cwd:                  0
-    Data::Dumper:         0
-    File::Slurp:          0
-    LWP::UserAgent:       0
-    Template:             0
-    Test::HTTP::Server::Simple:  0
-    Test::More:           0
-    Time::HiRes:          0
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.56
+name:                Template-Provider-HTTP
+version:             0.02
+abstract:            ~
+license:             perl
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
+    Cwd:                           0
+    Data::Dumper:                  0
+    File::Slurp:                   0
+    LWP::UserAgent:                0
+    Template:                      0
+    Test::HTTP::Server::Simple:    0
+    Test::More:                    0
+    Time::HiRes:                   0
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2

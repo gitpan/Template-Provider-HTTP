@@ -6,7 +6,7 @@ use warnings;
 
 use LWP::UserAgent;
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 =head1 NAME
 
@@ -62,6 +62,11 @@ name(omit http://):
         Template::Provider::HTTP->new( ABSOLUTE => 1 ) ], } );
     $tt->process( 'www.example.com/templates/my_template.html', \%vars );
 
+EXPAND_RELATIVE = 1 when passed to the constructor will attempt to expand
+relative paths in the source document into absolute paths.  For example:
+    href="../../main.css" will turn into: 
+    href="http://www.someurl.tld/some/path/../../main.css"
+
 =head1 NOTE
 
 Currently there is NO caching, so the webserver will get multiple hits every
@@ -91,6 +96,7 @@ sub _init {
     $self->{INCLUDE_PATH} = \@path;
     
     $self->{UA} = $params->{UA};
+    $self->{EXPAND_RELATIVE} = $params->{EXPAND_RELATIVE};
 
     return $self;
 
@@ -164,9 +170,10 @@ sub _template_content {
     my $data;
     my $mod_date;
     my $error;
+    my $res;
 
     if ( $path =~ m{ \A http s? :// \w }xi ) {
-        my $res = $self->_ua->get($path);
+        $res = $self->_ua->get($path);
 
         if ( $res->is_success ) {
             $data     = $res->decoded_content;
@@ -176,6 +183,44 @@ sub _template_content {
         }
     } else {
         $error = 'NOT A URL';
+    }
+
+    if( !$error && $self->{EXPAND_RELATIVE} ) {
+        my $urlbase = $res->base;
+        if( $urlbase !~ m/\/$/ ) {
+            my @chunks = split /\/+/, $urlbase;
+            delete $chunks[ scalar( @chunks ) - 1 ];
+            delete $chunks[0];
+            
+            $urlbase = "http://";
+            foreach my $chunk ( @chunks ) {
+                if( $chunk ) {
+                    $urlbase .= "$chunk/";
+                }
+            }
+        }
+
+        my @path_chunks = split( /\/+/, $urlbase );
+        my $domain = "http://" . $path_chunks[1];
+
+        my @dbl_matches = $data =~ m/"([^ ]+)"/g;
+        my @sgl_matches = $data =~ m/'([^ ]+)'/g;
+
+        foreach my $path ( grep { $_ && /^\./ } @dbl_matches ) {
+            $data =~ s/"$path"/"$urlbase$path"/g;
+        }
+        
+        foreach my $path ( grep { $_ && /^\./ } @sgl_matches ) {
+            $data =~ s/'$path'/'$urlbase$path'/g;
+        }
+
+        foreach my $path ( grep { $_ && /^\// } @dbl_matches ) {
+            $data =~ s/"$path"/"$domain$path"/g;
+        }
+        
+        foreach my $path ( grep { $_ && /^\// } @sgl_matches ) {
+            $data =~ s/'$path'/'$domain$path'/g;
+        }
     }
 
     return wantarray
