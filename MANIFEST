@@ -8,3 +8,4 @@ t/templates/files/in_files
 t/templates/http_a/in_http_a
 t/templates/http_b/in_http_b
 META.yml                                 Module meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)
